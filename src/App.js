@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { robots } from "./robots";
+import SearchBar from "./searchBar";
+import Cardlist from "./cardList";
+import "./App.css";
 
 function App() {
+  const [robo, setRobot] = useState(robots);
+  const [search, setSearch] = useState("");
+
+  const onSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+  useEffect(() => {
+    setRobot(
+      robots.filter((robot) => {
+        return robot.name.toLowerCase().includes(search.toLowerCase());
+      })
+    );
+  }, [search]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container tc">
+      <h1 className="header f2">ROBOFRIENDS</h1>
+      <SearchBar onSearch={onSearchChange}></SearchBar>
+      <Cardlist robot={robo} />
     </div>
   );
 }
